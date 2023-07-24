@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  db:
+    container_name: teslodb
+    image: postgres:15.3-bullseye
+    # restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - teslodb-postgres:/var/lib/postgresql/data
+
+volumes:
+  teslodb-postgres:
+    external: true
