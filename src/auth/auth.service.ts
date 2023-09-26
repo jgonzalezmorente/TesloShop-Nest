@@ -20,7 +20,6 @@ export class AuthService {
 
   async create( createUserDto: CreateUserDto ) {    
     try {
-
       const { password, ...userData } = createUserDto;
 
       const user = this.userRepository.create({
@@ -33,7 +32,7 @@ export class AuthService {
       
       return {
         ...user,
-        token: this.getJwtToken( { email: user.email } )
+        token: this.getJwtToken( user )
       };
         
       
@@ -43,11 +42,10 @@ export class AuthService {
   }
 
   async login( loginUserDto: LoginUserDto ) {
-
     const { password, email } = loginUserDto;
     const user = await this.userRepository.findOne({
       where: { email },
-      select: { email: true, password: true }
+      select: { id: true, email: true, password: true }
     });
 
     if ( !user ) {
@@ -61,9 +59,8 @@ export class AuthService {
     delete user.password;    
     return {
       ...user,
-      token: this.getJwtToken( { email: user.email } )
+      token: this.getJwtToken( user )
     };
-
   }
 
   private handleDBErrors( error: any ): never {
@@ -72,14 +69,12 @@ export class AuthService {
 
       console.log( error );
       throw new InternalServerErrorException( 'Please check server logs' );
-      
   }
 
-  private getJwtToken( payload: JwtPayload ) {
-
+  private getJwtToken( user: User ) {
+    const payload: JwtPayload = { id: user.id };
     const token = this.jwtService.sign( payload ); 
     return token;
-
   }
 
 }
