@@ -23,7 +23,7 @@ export class ProductsController {
     return this.productsService.findOnePlain( term );
   }
 
-  @Patch(':id')
+  @Patch( ':id' )
   update(
     @Param( 'id', ParseUUIDPipe ) id: string, 
     @Body() updateProductDto: UpdateProductDto
@@ -31,7 +31,7 @@ export class ProductsController {
     return this.productsService.update( id, updateProductDto );
   }
 
-  @Delete(':id')
+  @Delete( ':id' )
   remove(
     @Param( 'id', ParseUUIDPipe ) id: string
   ) {
