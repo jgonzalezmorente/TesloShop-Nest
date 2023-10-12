@@ -15,17 +15,25 @@ export class AuthController {
 
   constructor( private readonly authService: AuthService ) {}
 
-  @Post( 'register' )
-  create( @Body() createUserDto: CreateUserDto )  {
+  @Post('register')
+  create( @Body() createUserDto: CreateUserDto ) {
     return this.authService.create( createUserDto );
   }
 
-  @Post( 'login' )
-  loginUser( @Body() loginUserDto: LoginUserDto )  {
+  @Post('login')
+  loginUser( @Body() loginUserDto: LoginUserDto ) {
     return this.authService.login( loginUserDto );
   }
 
-  @Get( 'private' )
+  @Get('check-status')
+  @Auth()
+  checkAuthStatus(
+    @GetUser() user: User    
+  ) {
+    return this.authService.checkAuthService( user );
+  }
+
+  @Get('private')
   @UseGuards( AuthGuard() )
   testingPrivateRoute(
     // @Req() request: Express.Request,
@@ -46,7 +54,7 @@ export class AuthController {
   
   // @SetMetadata( 'roles', [ 'admin', 'super-user' ])
 
-  @Get( 'private2' )
+  @Get('private2')
   @RoleProtected( ValidRoles.admin, ValidRoles.user )
   @UseGuards( AuthGuard(), UserRoleGuard )
   privateRoute2(
@@ -58,7 +66,7 @@ export class AuthController {
     }
   }
 
-  @Get( 'private3' )
+  @Get('private3')
   @Auth( ValidRoles.admin )
   privateRoute3(
     @GetUser() user: User

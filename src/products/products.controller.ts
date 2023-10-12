@@ -25,12 +25,12 @@ export class ProductsController {
     return this.productsService.findAll( paginationDto );
   }
 
-  @Get( ':term' )
+  @Get(':term')
   findOne( @Param( 'term' ) term: string ) {
     return this.productsService.findOnePlain( term );
   }
 
-  @Patch( ':id' )
+  @Patch(':id')
   @Auth( ValidRoles.admin )
   update(
     @Param( 'id', ParseUUIDPipe ) id: string, 
@@ -40,7 +40,7 @@ export class ProductsController {
     return this.productsService.update( id, updateProductDto, user );
   }
 
-  @Delete( ':id' )
+  @Delete(':id')
   @Auth( ValidRoles.admin )
   remove(
     @Param( 'id', ParseUUIDPipe ) id: string

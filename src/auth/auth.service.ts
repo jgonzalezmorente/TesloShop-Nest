@@ -63,18 +63,26 @@ export class AuthService {
     };
   }
 
+  checkAuthService( user: User ) {
+    return {
+      ...user,
+      token: this.getJwtToken( user )
+    }
+
+  }
+  
+  private getJwtToken( user: User ) {
+    const payload: JwtPayload = { id: user.id };
+    const token = this.jwtService.sign( payload ); 
+    return token;
+  }
+
   private handleDBErrors( error: any ): never {
     if ( error.code === '23505' ) 
       throw new BadRequestException( error.detail );
 
       console.log( error );
       throw new InternalServerErrorException( 'Please check server logs' );
-  }
-
-  private getJwtToken( user: User ) {
-    const payload: JwtPayload = { id: user.id };
-    const token = this.jwtService.sign( payload ); 
-    return token;
   }
 
 }
