@@ -10,7 +10,10 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   controllers: [ AuthController ],
-  providers: [ AuthService, JwtStrategy ],
+  providers: [
+    AuthService, 
+    JwtStrategy
+  ],
   imports: [
     ConfigModule,
     TypeOrmModule.forFeature( [ User ] ),
@@ -30,6 +33,11 @@ import { JwtStrategy } from './strategies/jwt.strategy';
       }
     })
   ],
-  exports: [ TypeOrmModule, JwtStrategy, PassportModule, JwtModule ]
+  exports: [
+    TypeOrmModule, 
+    JwtStrategy, 
+    PassportModule, 
+    JwtModule
+  ]
 })
 export class AuthModule {}

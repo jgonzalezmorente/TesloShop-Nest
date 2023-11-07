@@ -1,5 +1,6 @@
-import { Controller, Get, Post, Body, UseGuards, Headers, SetMetadata } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, Headers } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { CreateUserDto, LoginUserDto } from './dto';
 import { IncomingHttpHeaders } from 'http';
@@ -10,12 +11,16 @@ import { RoleProtected } from './decorators/role-protected.decorator';
 import { ValidRoles } from './interfaces';
 
 
+@ApiTags('Auth')
 @Controller( 'auth' )
 export class AuthController {
 
   constructor( private readonly authService: AuthService ) {}
 
   @Post('register')
+  @ApiResponse({ status: 201, description: 'User was created', type: User })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 403, description: 'Forbidden' })
   create( @Body() createUserDto: CreateUserDto ) {
     return this.authService.create( createUserDto );
   }
